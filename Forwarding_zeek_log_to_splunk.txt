@@ -1,0 +1,46 @@
+-------------------------------
+-------------------------------
+-------------------------------
+
+00- Create Reciver and indexer on Splunk Server and Install Add-on on Splunk Server
+00 - convert zeek logs to json
+	vim /opt/zeek/share/zeek/site/local.zeek
+	@load policy/tuning/json-logs  #json format
+	zeekctl
+	deploy
+
+01- Install UF for Linux Debian 
+	download for 8.2.1
+	dpkg -i splunkforwarder
+02-01- config input (/opt/splunkforwarder/etc/apps)
+	put add-on zeek splunk_TA_ZEEK on zeek
+	cd /opt/splunkforwarder/etc/apps/Splunk_TA_zeek
+	mkdir local instead of 'default' folder
+	vim ./inputs.conf
+		[default]
+		host = zeek
+		
+		[monitor:///opt/zeek/logs/current/*.log]
+		index=zeek
+		sourcetype = bro:json
+02-02- config output
+	cd /opt/splunkforwarder/etc/system/
+	mkdir local
+	cd local
+	ls .  # We must see the 'outputs.conf / server.conf / README '
+	vim outputs.conf
+
+	[tcpout]
+	defaultGroup = default-autolb-group
+	
+	[tcpout:default-autolb-group]
+	server = <Splunk_Server_ip:9997>
+
+	[tcpout-server://<Splunk_Server:9997>]
+
+03- Run Splunk UF on zeek
+	splunk start --accept-license
+	splunk add forward-server <splunkServer_IP:9997>
+	splunk list forward-server
+	splunk restart
+	splunk list forward-server
