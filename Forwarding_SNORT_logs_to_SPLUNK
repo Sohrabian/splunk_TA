@@ -52,7 +52,7 @@ https://www.snort.org/downloads/#rule-downloads
   ## step 08-04 - Go to The /etc/snort/ruels/local.rules  to Create Custome Rule for Testing
       vim /etc/snort/ruels/local.rules
       alert icmp any any -> $HOME_NET any (msg:"ICMP Ping Detected"; sid:100001; rev:1;)   [To Detect ICMP ECHO Request using Ping Command] [Alert tcp from any connection to any port]
-      alert icmp any any -> $HOME_NET 22 (msg:"SSH Authentication Attempt"; sid:100002; rev:1;)  [To Detect SSH Connection] 
+      alert tcp any any -> $HOME_NET 22 (msg:"SSH Authentication Attempt"; sid:100002; rev:1;)  [To Detect SSH Connection] 
   ## step 08-05 - Snort' Alert Monitoring Working On Two Main Mode "Console", "Full Mode"
       man snort
       sudo snort -q -l /var/log/snort -i ens33 -A console -c /etc/snort/snort.conf
