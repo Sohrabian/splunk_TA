@@ -1,0 +1,73 @@
+## SNORT 2.9 LTS
+
+## Step 01- Installation the Metasploitable 3 on Vmware/VirtualBox
+https://www.youtube.com/watch?v=errn34YrEjM [HackerSploit - Metasploitable3 on VBOX]
+https://www.youtube.com/watch?v=Zd6NFfVsYfc [Ruba AI Omari - Metasploitable3 on VMware por]
+https://www.youtube.com/watch?v=5F7j2E94p9Y [InfoSec Pat - Metasploitable2 on VMware pro]
+
+## Step 02- After the Installation of SNORT you can Update your Rules Based on your SNORT version has been Installed
+https://www.snort.org/downloads/#rule-downloads
+
+## Step 03- Setting up your Linux Repository VM by arvanCloud faster than updat and upgrade
+01- Using "ArvanCloud" to Change Repository [https://www.arvancloud.ir/fa/dev/linux-repository]
+02- Using These Command to change:
+      cat /etc/lsb_release
+      vim /etc/apt/sources.list
+
+## Step 04- Snort Installation
+      sudo apt 
+      sudo apt install snort -y
+      [Find the NIC has Promisc mode for Captureing Network]
+      ifconfig / ip a 
+      insert NIC Interface
+      insert your <IP_NIC/subnetMask>
+      [Find subnetMask]
+      ip  a  s
+      snort --version
+      sudo ip link set ens33 promisc on
+
+## Step 05- Knowing The Information about some PATH in Snort
+      /etc/snort/snert.conf           [Snort Read This path]
+      /var/log/snort                  [Snort' Log]
+      /etc/snort/rules                [Snort' Rules]
+      /etc/snort/rules/local.rules    [Snort' Custome Rule for cyberSecurity ReSearcher]
+
+## Step 06- Chanige Config in "/etc/snort/snort.conf" in Snort 2.9
+      ipvar      HOME_NET  <NIC_IP>
+      ipvar      EXTERNAL_NET  any     [Leave This Variable with "any" due to The Attack Comes From any External_IP or any External_Port, in Real Leave This with your RSPAN Port .etc]
+
+## Step 07- After any Change Config "Self_TEST"
+      man Snort
+      sudo snort -T -i <NIC_Interface_NAME>  -c /etc/snort/snort.conf
+
+## Step 08 - Create Custome Rule in [SNORT 2.9]
+  ## Step 08-01 - Change the Snort.conf from /etc/snort/snort.conf
+      vim /etc/snort/snort.conf  
+  ## Step 08-02 - Comment the Snort' Rules Path from "597" to "717" line Number using Bellow
+      :set number
+      :597,717s/^/#      [comment]
+      :597,717s/^#//     [Uncomment]
+  ## Step 08-03 - Self Test when you Change the Snort.conf
+      sudo snort -T -i <NIC_INTERFACE_NAME> -c /etc/snort/snort.conf 
+  ## step 08-04 - Go to The /etc/snort/ruels/local.rules  to Create Custome Rule for Testing
+      vim /etc/snort/ruels/local.rules
+      alert icmp any any -> $HOME_NET any (msg:"ICMP Ping Detected"; sid:100001; rev:1;)   [To Detect ICMP ECHO Request using Ping Command] [Alert tcp from any connection to any port]
+      alert icmp any any -> $HOME_NET 22 (msg:"SSH Authentication Attempt"; sid:100002; rev:1;)  [To Detect SSH Connection] 
+  ## step 08-05 - Snort' Alert Monitoring Working On Two Main Mode "Console", "Full Mode"
+      man snort
+      sudo snort -q -l /var/log/snort -i ens33 -A console -c /etc/snort/snort.conf
+      or
+      sudo snort -q -l /var/log/snort -i ens33 -A full -c /etc/snort/snort.conf
+
+## Step 09 - Change to The main Confing Rules
+    vim /etc/snort/snort.conf
+    :set number
+    :597,717s/^#//    [uncomment]
+## Step 10 - Downlaod Config Ruels and Update from the SNORT Vendor Site
+    Snort  [https://www.snort.org/downloads/#rule-downloads]
+
+
+
+
+
+
