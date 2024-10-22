@@ -66,6 +66,33 @@ https://www.snort.org/downloads/#rule-downloads
 ## Step 10 - Downlaod Config Ruels and Update from the SNORT Vendor Site
     Snort  [https://www.snort.org/downloads/#rule-downloads]
 
+--------------------------------------------------
+--------------------------------------------------
+-------------- Forwarding Snort Logs To SPLUNK----
+--------------------------------------------------
+--------------------------------------------------
+## Step 01 - Run Splunk UF on zeek
+                  tar -xvf SplunkLinuxForwarder.tar /opt
+                  cd /opt/splunkforwarder/bin
+	            splunk start --accept-license
+	            splunk add forward-server <splunkServer_IP:9997>
+	            splunk list forward-server
+	            splunk restart
+	            splunk list forward-server
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
