@@ -68,7 +68,7 @@ https://www.snort.org/downloads/#rule-downloads
 
 --------------------------------------------------
 --------------------------------------------------
--------------- Forwarding Snort Logs To SPLUNK----
+-------------- Install SPLUNK UF on GNU/LINUX ----
 --------------------------------------------------
 --------------------------------------------------
 ## Step 01 - Run Splunk UF on zeek
@@ -81,7 +81,40 @@ https://www.snort.org/downloads/#rule-downloads
 	        splunk list forward-server
 		cd /opt/splunkforwarder/etc/system/local
 		vim output.conf
-		
+--------------------------------------------------
+-----------Test Snort /var/log in Full Mode ------
+-----------Forwarding Snort Logs To SPLUNK--------
+--------------------------------------------------
+
+## Step 01- 
+	Do it again from "step-08/step-08-01/step-08-02/step-08-03/step-08-04"
+## Step 02-
+	sudo snort -q -l /var/log/snort -i ens33 -A full -c /etc/snort/snort.conf
+## step 03-
+	cd /var/log/snort
+	ls
+	vim ./alert
+## step 04-
+	## Forwarding Snort Logs to SPlunk
+	cd /opt/splunkforwarder/bin
+	./splunk add monitor /var/log/snort/alert
+	cd /opt/splunkforwarder/app/search/local
+	vim ./inputs.conf
+	
+	[splunktcp://9997]
+	connection_host = <SPLUNK_SERVER_IP>
+	[monitor:///var/log/snort/alert]
+	disabled = false
+	index = main
+	sourcetype = snort_alert_full
+	source = snort
+
+# step 05-
+	cd /opt/splunkforwarder/bin
+	./splunk restart
+# step 06- 
+	
+
 
 
 
