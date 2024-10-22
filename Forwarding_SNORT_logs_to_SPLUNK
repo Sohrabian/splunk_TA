@@ -1,4 +1,10 @@
 ## SNORT 2.9 LTS
+## Optional to add Linux/SPLUNK_UF to ".bashrc" using:
+	vim .bashrc
+	Go to the End Of this File
+	add > export PATH="/opt/splunkforwarder/bin:$PATH"
+	:wq
+	TEST > splunk status
 
 ## Step 01- Installation the Metasploitable 3 on Vmware/VirtualBox
 https://www.youtube.com/watch?v=errn34YrEjM [HackerSploit - Metasploitable3 on VBOX]
