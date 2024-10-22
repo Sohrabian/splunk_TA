@@ -10,6 +10,7 @@
 	:wq
 	TEST > splunk status
 ## import "snort-alert-for-splunk_111" add-on
+## Using "TestmyNIDs"  >  [https://github.com/3CORESec/testmynids.org]
 
 -----------------------------------------------------------------
 --------------------- Installation SNORT 2.9 --------------------
