@@ -100,7 +100,7 @@ https://www.snort.org/downloads/#rule-downloads
 	cd /var/log/snort
 	ls
 	vim ./alert
-## step 04-
+## step 04- use this documentation > [https://apps.splunk.com/app/5488/#/details]
 	## Forwarding Snort Logs to SPlunk
 	cd /opt/splunkforwarder/bin
 	./splunk add monitor /var/log/snort/alert
@@ -111,7 +111,7 @@ https://www.snort.org/downloads/#rule-downloads
 	connection_host = <SPLUNK_SERVER_IP>
 	[monitor:///var/log/snort/alert]
 	disabled = false
-	index = main
+	index = snort
 	sourcetype = snort_alert_full
 	source = snort
 
