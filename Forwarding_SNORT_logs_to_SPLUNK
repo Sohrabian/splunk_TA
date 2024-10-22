@@ -72,13 +72,16 @@ https://www.snort.org/downloads/#rule-downloads
 --------------------------------------------------
 --------------------------------------------------
 ## Step 01 - Run Splunk UF on zeek
-                  tar -xvf SplunkLinuxForwarder.tar /opt
-                  cd /opt/splunkforwarder/bin
-	            splunk start --accept-license
-	            splunk add forward-server <splunkServer_IP:9997>
-	            splunk list forward-server
-	            splunk restart
-	            splunk list forward-server
+                tar -xvf SplunkLinuxForwarder.tar /opt
+                cd /opt/splunkforwarder/bin
+	        splunk start --accept-license
+	        splunk add forward-server <splunkServer_IP:9997>
+	        splunk list forward-server
+	        splunk restart
+	        splunk list forward-server
+		cd /opt/splunkforwarder/etc/system/local
+		vim output.conf
+		
 
 
 
