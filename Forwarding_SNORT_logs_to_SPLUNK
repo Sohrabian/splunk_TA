@@ -129,7 +129,9 @@ https://www.snort.org/downloads/#rule-downloads
 	cd /opt/splunkforwarder/bin
 	./splunk restart
 # step 06- 
-	
+	Go Back to the SPLUNK Main Dashboard
+	Click On "Data Summery"
+	find the "source" and "sourcetype"
 
 
 
