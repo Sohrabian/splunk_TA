@@ -44,3 +44,4 @@
 	splunk list forward-server
 	splunk restart
 	splunk list forward-server
+	./splunk enable boot-start
