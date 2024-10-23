@@ -1,0 +1,10 @@
+---------------------------------
+----------------SPLUNK SERVER----
+---------------------------------
+
+01- cd /opt/splunk/bin
+
+## Splunk Cleaning Index
+./splunk stop
+./splunk clean eventdata -index <Index_name>
+./splunk start
