@@ -114,7 +114,7 @@ https://www.snort.org/downloads/#rule-downloads
 	## Forwarding Snort Logs to SPlunk
 	cd /opt/splunkforwarder/bin
 	./splunk add monitor /var/log/snort/alert
-	cd /opt/splunkforwarder/app/search/local
+	cd /opt/splunkforwarder/etc/apps/search/local
 	vim ./inputs.conf
 	
 	[splunktcp://9997]
