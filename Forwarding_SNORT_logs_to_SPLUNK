@@ -97,6 +97,8 @@ https://www.snort.org/downloads/#rule-downloads
 	        splunk list forward-server
 		cd /opt/splunkforwarder/etc/system/local
 		vim output.conf
+		cd /opt/splunkforwarder/bin
+		./splunk enable boot-start
 --------------------------------------------------
 -----------Test Snort /var/log in Full Mode ------
 -----------Forwarding Snort Logs To SPLUNK--------
