@@ -8,3 +8,6 @@
 ./splunk stop
 ./splunk clean eventdata -index <Index_name>
 ./splunk start
+
+## Delete Index Data Using WEB Interface
+index=<yourindexname>|delete
