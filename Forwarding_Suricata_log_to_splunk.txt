@@ -1,3 +1,5 @@
+Resources: https://www.youtube.com/watch?v=UXKbh0jPPpg
+
 Setting up your Linux Repository VM by arvan Cloud faster than update and upgrade
 	01-  https://www.arvancloud.ir/fa/dev/linux-repository
 	02- 
