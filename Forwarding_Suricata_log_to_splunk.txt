@@ -1,0 +1,164 @@
+Setting up your Linux Repository VM by arvan Cloud faster than update and upgrade
+	01-  https://www.arvancloud.ir/fa/dev/linux-repository
+	02- 
+		cat /etc/lsb_release
+		vim /etc/apt/sources.list	
+--------------------------------------------------------------------
+00- Resource https://suricata.readthedocs.io/en/latest/install.html
+01- Ubuntu
+	sudo add-apt-repository ppa:oisf/suricata-stable
+	sudo apt update
+	sudo apt install suricata -y
+
+02- Working in background
+	sudo systemctl enable suricata.service
+	sudo systemctl status suricata
+	
+03- Working Directory
+	ls -la /etc/suricata
+	# Suricata.yaml is a Config file for Suricata
+	# rules Directory is a working Place for Suricata Ruels
+04- Change Config Suricata
+	sudo su
+	vim /etc/suricata/Suricata.yaml
+	ifconfig #Find The VirualNIC
+	ip a s
+
+04-01
+		## Change the Variables 
+		address-groups:
+			HOME_NET: "192.168.10.0/24"
+	
+		EXTERNAL_NET: "!$HOME_NET"
+		#EXTERNAL_NET: "any"
+
+04-02
+		## Find the "af-packet" for Linux Hight Speed Capture Support
+			/af-packet
+			- interface: ens33  ##YOUR VIRUAL NIC
+04-03
+		## Find the "Cross Platform libpcap capture Support"
+		## Packet capture is a networking practice involving the interception of data packets travelling over
+			 a network. Once the packets are captured, they can be stored by IT teams for further analysis.
+	
+		pcap:
+			interface: ens33
+04-04
+		## Community flow id option, this used for event correlation and is useful when using
+		tools like zeek or when you are trying to import the logs in json format so this is very important.
+			by default suricata already saves the logs in json format.
+		
+		## Find "Community Flow ID"
+			community-id: true
+04-05
+		## Find "default-rule-path: /var/lib/suricata/rules
+		
+		rule-files:
+			- suricata.rules
+			- /etc/suricata/rules/local.rules ## the Custome rule location in Example [if you have]
+
+05-
+		## Create Suricata Rule in "/var/lib/suricata/ruels"
+		## suricata doesn't have man page
+		suricata --help
+		sudo suricata-update  			##Rules Set as Defualt Suricata has Placed
+		ls -la /var/lib/suricata/rules
+		sudo suricata-update list-sources  	##The Resources You Can have Suricata Ruels 
+							##In Some Cases They have License "Commeritial"
+		sudo suricata-update enable-source <The Name of The Source Of the Rules from "privious" command> like:
+		sudo suricata-update enable-source malsilo/win-malware
+		sudo suricata-update			##just make sure to get the Latest Here.
+		sudo systemctl status suricata.service	##field
+		sudo suricata -T -c /etc/suricata/suricata.yaml -v	##To get BackTest
+		suricata --help
+		sudo systemctl start suricata.service	##Running in the background
+		sudo systemctl status suricata.service 	
+		ls -la /var/log/suricata
+			## fast.log	the otuputformat
+			## eve.json	the outputformat
+		sudo ls -la /var/lib/suricata/rules
+		curl http://testmynids.org/uid/index.html	##Test
+		sudo cat /var/log/suricata/fast.log		##Tail -f /var/log/suricata/fast.log
+
+
+06-		
+		## custome Rules
+		sudo systemctl stop suricata.service
+		sudo vim /etc/suricata/rules/local.rules
+		sudo vim /etc/suricata/ruels/local.rules
+			alert icmp any any -> $HOME_NET (msg:"ICMP Ping"; sid:1; rev:1;)
+		sudo vim /etc/suricata/suricata.yaml
+		/default-rule-path  #Find in VIM
+		rule-files:
+			- suricata.rules
+			- /etc/suricata/rules/local.rules
+		:wq
+		sudo suricata -T -c /etc/suricata/suricata.yaml -v #Self Test
+		sudo systemctl start suricata.service
+		sudo systemctl status suricata.service
+		sudo cat /var/log/suricata/fast.log #Test The Log Pin in ICMP Request
+		sudo cat /var/log/suricata/eve.json
+		
+07
+		## to read json format for more "Forensics"
+		sudo apt install jq
+		sudo tail -f /var/log/suricata/eve.json | jq 'select(.event_type=="alert")'
+
+-------------------------------------------------------
+---------- Run SPlUNK UF on Suricata machine -------
+-------------------------------------------------------
+
+	## Run splunk uf on suricata machine
+		tar -xvf SplunkLinuxForwarder.tgz /opt
+		cd /opt/splunkforwarder/bin
+		splunk start --accept-license
+		splunk add forward-server <splunk_server_IP:9997>
+		splunk list forward-server
+		splunk restart
+		splunk list forward-server
+		cd /opt/splunkforwarder/etc/system/local
+		vim output.conf
+		cd /opt/splunkforwarder/bin
+		./splunk enable boot-start
+		
+
+-------------------------------------------------------
+---------- How to Get Suricata Data into Splunk -------
+-------------------------------------------------------
+
+	mv Ta-Suricata /opt/splunkforwarder/etc/apps
+	cd /opt/splunkforwarder/etc/system/local
+	## Configure the Suricata TA to monitor our Suricata "Eve JSON"
+	cd /opt/splunkforwarder/etc/apps/TA-Suricata/
+	mkdir local instead of 'default' folder
+	vim ./inputs.conf
+		[default]
+		host = suricata
+		
+		[monitor:///var/log/suricata/[select_Virual_NIC_has_captured]/eve.json ]
+		sourcetype=suricata
+		index=suricata
+	cd /opt/splunkforwarder/bin
+	./splunk restart
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
