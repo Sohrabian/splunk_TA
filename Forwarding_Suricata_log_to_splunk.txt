@@ -86,7 +86,7 @@ Setting up your Linux Repository VM by arvan Cloud faster than update and upgrad
 		sudo systemctl stop suricata.service
 		sudo vim /etc/suricata/rules/local.rules
 		sudo vim /etc/suricata/ruels/local.rules
-			alert icmp any any -> $HOME_NET (msg:"ICMP Ping"; sid:1; rev:1;)
+			alert icmp any any -> $HOME_NET any (msg:"ICMP Ping"; sid:1; rev:1;)
 		sudo vim /etc/suricata/suricata.yaml
 		/default-rule-path  #Find in VIM
 		rule-files:
