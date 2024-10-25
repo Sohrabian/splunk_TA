@@ -1,6 +1,12 @@
 --------------------------------------------
 ---------Installation of RITA---------------
 --------------------------------------------
+## Step 00- Frist Step is Install zeek on the Server via below link:
+https://github.com/Sohrabian/splunk_TA/blob/main/Forwarding_zeek_log_to_splunk.txt
+
+--------------------------------------------
+---------Installation of RITA---------------
+--------------------------------------------
 ## Step 01- RITA Installation and Configuration 
 rita import --rolling --numchunks 48 /opt/zeek/logs/current 48-hour-dataset
 
