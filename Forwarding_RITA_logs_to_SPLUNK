@@ -1,0 +1,45 @@
+--------------------------------------------
+---------Installation of RITA---------------
+--------------------------------------------
+## Step 01- RITA Installation and Configuration 
+rita import --rolling --numchunks 48 /opt/zeek/logs/current 48-hour-dataset
+
+## Step 02- Splunk Integration with RITA 
+1- apt-get install sshpass
+
+2- mkdir /opt/csvlogs
+
+3- nano /opt/RITA.sh
+
+#! /bin/bash
+rita import --rolling --numchunks 48 /opt/zeek/logs/current 48-hour-dataset 
+rita show-beacons 48-hour-dataset > /opt/csvlogs/show-beacons.csv
+rita show-beacons-proxy 48-hour-dataset > /opt/csvlogs/show-beacons-proxy.csv 
+rita show-bl-dest-ips 48-hour-dataset > /opt/csvlogs/show-bl-dest-ips.csv 
+rita show-bl-source-ips 48-hour-dataset > /opt/csvlogs/show-bl-source-ips.csv 
+rita show-exploded-dns 48-hour-dataset > /opt/csvlogs/show-exploded-dns.csv 
+rita show-open-connections 48-hour-dataset > /opt/csvlogs/show-open-connections.csv  
+rita show-useragents 48-hour-dataset > /opt/csvlogs/show-useragents.csv  
+rita show-beacons-sni 48-hour-dataset > /opt/csvlogs/show-beacons-sni.csv  
+rita show-bl-hostnames 48-hour-dataset > /opt/csvlogs/show-bl-hostnames.csv  
+rita show-long-connections 48-hour-dataset > /opt/csvlogs/show-long-connections.csv  
+rita show-strobes 48-hour-dataset > /opt/csvlogs/show-strobes.csv  
+
+sshpass -p 123456@a scp -r /opt/csvlogs/* root@10.1.1.1:/opt/splunk/etc/apps/search/lookups
+
+4- chmod 755 /opt/RITA.sh
+
+5- nano /etc/crontab
+
+*/1 * * * * root /opt/RITA.sh
+
+OR
+
+0 * * * * root /opt/RITA.sh
+
+
+6- service cron restart
+
+## Step 03- Beaconing Detection with RITA and SPLUNK
+| inputlookup show-beacons.csv
+| table "Score","Source IP","Destination IP","Connections","Avg. Bytes","Total Bytes","TS Score","DS Score","Dur Score","Hist Score","Top Intvl"
