@@ -1,6 +1,75 @@
--------------------------------
--------------------------------
--------------------------------
+----------------------------------------------------
+---------Installation of Zeek-----------------------
+----------------------------------------------------
+Installation zeek 
+step 01- 
+	https://github.com/zeek/zeek/wiki/Binary-Packages
+
+step 02- 
+	## Get the Linux Version
+	hostnamectl
+step 03- 
+	Installation Based on "Linux Distro"
+
+step 04- Change Config on "/opt/zeek/etc" and "/opt/zeek/bin"
+	sudo su
+	vim /opt/zeek/etc/networks.cfg
+	192.168.234.0/24	LAN-NETWORK
+	172.16.50.0/24		DMZ-NETWORK	
+	vim /opt/zeek/etc/node.cfg
+	[zeek]	
+	type=standalone
+	host=localhost
+	interface=ens33
+	cd /opt/zeek/bin
+	zeekctl
+	deploy		## To Start and Deploy "logger" and "manager" on Zeek
+
+	
+step 05- "/opt/zeek/logs"
+	cd /opt/zeek/logs
+	ls
+	## We are Working on the "Current" file
+
+step 06-
+	cd /opt/zeek/bin
+	ls
+	vim ~/.bashrc
+	## Insert The End of the File
+	export PATH=$PATH:/opt/zeek/bin
+	:wq
+	source ~/.bashrc
+	## Test
+	zeek --version
+	zeek status
+	zeekctl		## This command show the Zeek Prompt
+	status		## Write in zeekctl Mode
+	deploy		## Start the "logger" and "manager" 
+	stop 		## When you want to Change Config on The "/opt/zeek/etc/network.cfg or node.cfg"
+
+step 07-
+	sudo ip link set ens33 promisc on	## In a Range IP or VLAN (in a Same BroadCast Domain)
+
+step 08-
+	## Test 01 - on Other Machin
+	ping uncox.com
+	ping yahoo.com
+	
+	## On zeek Machine
+	cd /opt/zeek/logs
+	ls	## Must see the "current" file
+	zeekctl
+	deploy	## To start and the "logger" and "manager" 
+	cd /opt/zeek/logs
+	ls	## Must see the "current" folder
+	cd ./current
+	cat current/dns.log | grep uncox.com
+	or
+	tail -f * | grep yahoo.com
+
+----------------------------------------------------
+--------Forward Zeek Logs To the SPLUNK-------------
+----------------------------------------------------
 
 00- Create Reciver and indexer on Splunk Server and Install Add-on on Splunk Server
 00 - convert zeek logs to json
